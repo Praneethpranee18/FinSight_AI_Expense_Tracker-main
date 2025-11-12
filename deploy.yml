@@ -1,8 +1,8 @@
 - name: Auto Deploy FinSight Containers
   hosts: localhost
-  become: yes
+  become: false
   tasks:
-    - name: Commit changes to Git
+    - name: Commit changes to Git (SSH)
       command: >
         bash -c "git add . &&
         git commit -m 'Auto commit from Ansible on {{ lookup('pipe', 'date +%Y-%m-%d_%H-%M-%S') }}' || true &&
