@@ -1,0 +1,21 @@
+- name: Auto Deploy FinSight Containers
+  hosts: localhost
+  become: yes
+  tasks:
+    - name: Commit changes to Git
+      command: >
+        bash -c "git add . &&
+        git commit -m 'Auto commit from Ansible on {{ lookup('pipe', 'date +%Y-%m-%d_%H-%M-%S') }}' || true &&
+        git push origin main"
+
+    - name: Stop running containers
+      command: docker-compose down
+
+    - name: Remove old images
+      command: docker system prune -af
+
+    - name: Build new images
+      command: docker-compose build
+
+    - name: Start containers
+      command: docker-compose up -d
