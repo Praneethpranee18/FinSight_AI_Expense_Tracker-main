@@ -20,15 +20,44 @@
       args:
         chdir: /mnt/d/FinSight_AI_Expense_Tracker-main/client
 
-    - name: Stop existing backend process (if any)
-      shell: pkill -f "npm run dev" || true
+    - name: Ensure old backend processes are stopped (safe)
+      shell: |
+        if pgrep -f "npm run dev" >/dev/null 2>&1; then
+          pkill -f "npm run dev" || true
+          sleep 1
+          pgrep -f "npm run dev" >/dev/null 2>&1 && pkill -9 -f "npm run dev" || true
+        fi
+      args:
+        chdir: /mnt/d/FinSight_AI_Expense_Tracker-main
+      failed_when: false
 
-    - name: Start backend
-      shell: nohup npm run dev > backend.log 2>&1 &
+    - name: Ensure old frontend processes are stopped (safe)
+      shell: |
+        if pgrep -f "vite" >/dev/null 2>&1 || pgrep -f "npm run dev" >/dev/null 2>&1; then
+          pkill -f "vite" || true
+          pkill -f "npm run dev" || true
+          sleep 1
+          pgrep -f "vite" >/dev/null 2>&1 && pkill -9 -f "vite" || true
+          pgrep -f "npm run dev" >/dev/null 2>&1 && pkill -9 -f "npm run dev" || true
+        fi
+      args:
+        chdir: /mnt/d/FinSight_AI_Expense_Tracker-main
+      failed_when: false
+
+    - name: Start backend (background)
+      shell: |
+        nohup npm run dev > /mnt/d/FinSight_AI_Expense_Tracker-main/server/backend.log 2>&1 &
+        sleep 0.5
       args:
         chdir: /mnt/d/FinSight_AI_Expense_Tracker-main/server
+      async: 45
+      poll: 0
 
-    - name: Start frontend
-      shell: nohup npm run dev > frontend.log 2>&1 &
+    - name: Start frontend (background)
+      shell: |
+        nohup npm run dev > /mnt/d/FinSight_AI_Expense_Tracker-main/client/frontend.log 2>&1 &
+        sleep 0.5
       args:
         chdir: /mnt/d/FinSight_AI_Expense_Tracker-main/client
+      async: 45
+      poll: 0
