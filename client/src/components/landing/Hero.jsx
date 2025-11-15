@@ -5,7 +5,7 @@ function Hero() {
   return (
     <section className="px-6 py-12 text-center md:py-20 bg-gradient-to-b from-white to-[#F9FAFB] relative">
       <h1 className="md:text-6xl text-4xl font-extrabold text-[#111827] leading-tight">
-        Smarter Money Management <br />
+        Hmarter Money Management <br />
         <span className="text-[#2563EB]">Starts Here</span>
       </h1>
 
