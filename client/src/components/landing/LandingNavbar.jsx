@@ -6,7 +6,7 @@ function LandingNavbar() {
     <nav className="flex items-center justify-between md:px-16 md:py-3 px-2 py-2 bg-white shadow-md">
       <div className="inline-flex items-center">
         <img src={logo} className="md:w-15 w-10 h-full" alt="LOGO" />
-        <h1 className="md:font-bold font-semibold md:text-3xl text-xl text-[#2563EB]">Praneeth</h1>
+        <h1 className="md:font-bold font-semibold md:text-3xl text-xl text-[#2563EB]">Pramodh</h1>
       </div>
 
       <div className="space-x-2">
